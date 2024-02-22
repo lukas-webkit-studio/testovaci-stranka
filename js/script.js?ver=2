@@ -1,0 +1,215 @@
+// Browser update
+
+var $buoop = {}; 
+$buoop.ol = window.onload; 
+window.onload=function(){ 
+ try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+ var e = document.createElement("script"); 
+ e.setAttribute("type", "text/javascript"); 
+ e.setAttribute("src", "//browser-update.org/update.js"); 
+ document.body.appendChild(e); 
+}                   
+
+
+
+
+  $(document).ready(function() {
+    
+    setInterval('cycleImages()', 6000);
+     
+    $('a.lbox').nivoLightbox({ effect: 'fade' });
+    
+   
+    var swiper = new Swiper('#swiper1.swiper-container', {
+        autoplay: 5000,
+	    speed: 700,
+        loop: true,    
+        pagination: '#swiper1 .swiper-pagination',
+        paginationClickable: '#swiper1 .swiper-pagination',        
+        nextButton: '#swiper1 .swiper-button-next',
+        prevButton: '#swiper1 .swiper-button-prev',        
+        spaceBetween: 0
+    });
+    
+    var swiper2 = new Swiper('#swiper2.swiper-container', {
+        autoplay: 5000,
+	    speed: 700,
+        loop: true,    
+        pagination: '#swiper2 .swiper-pagination',
+        paginationClickable: '#swiper2 .swiper-pagination',        
+        nextButton: '#swiper2 .swiper-button-next',
+        prevButton: '#swiper2 .swiper-button-prev',        
+        spaceBetween: 0
+    });
+    
+    var swiper3 = new Swiper('#swiper3.swiper-container', {
+        autoplay: 5000,
+	    speed: 700,
+        loop: true,    
+        pagination: '#swiper3 .swiper-pagination',
+        paginationClickable: '#swiper3 .swiper-pagination',        
+        nextButton: '#swiper3 .swiper-button-next',
+        prevButton: '#swiper3 .swiper-button-prev',        
+        spaceBetween: 0
+    });           
+    
+    
+    $('#headernav').click( function() {
+      $(this).toggleClass('active');
+    });
+    
+    
+    $('a[href*=#]:not([href=#])').click(function(e) {
+      e.preventDefault();
+      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {  scroller( $(this.hash) ); }
+      else window.location.href = $(this).attr("href");   
+    });       
+
+
+ 
+    $.datepicker.regional['cs'] = { 
+                closeText: 'cerrar', 
+                prevText: 'předchozí', 
+                nextText: 'další', 
+                currentText: 'hoy', 
+                monthNames: ['leden','únor','březen','duben','květen','červen', 'červenec','srpen','září','říjen','listopad','prosinec'],
+                monthNamesShort: ['le','ún','bř','du','kv','čn', 'čc','sr','zá','ří','li','pr'], 
+                dayNames: ['neděle','pondělí','úterý','středa','čtvrtek','pátek','sobota'], 
+                dayNamesShort: ['ne','po','út','st','čt','pá','so',], 
+                dayNamesMin: ['ne','po','út','st','čt','pá','so'], 
+                weekHeader: 'sm', 
+                dateFormat: 'd. m. yy', 
+                firstDay: 1, 
+                isRTL: false, 
+                showMonthAfterYear: false, 
+                yearSuffix: ''};    
+    $.datepicker.setDefaults($.datepicker.regional['cs']);
+    
+	var date = new Date();        
+    $('#xrezervace input[name="rezprijezd"], #xrezervace input[name="rezodjezd"], #rezervacebox input[name="rezprijezd"], #rezervacebox input[name="rezodjezd"]').datepicker({
+        dateFormat: "d. m. yy",
+	   beforeShowDay: function(date) {
+            var m = date.getMonth()+1, d = date.getDate(), y = date.getFullYear();
+            if (m<10) m="0"+m;
+            if (d<10) d="0"+d;
+            
+		for (i = 0; i < resdays.length; i++) {
+			if(resdays[i]==y+"-"+m+"-"+d)	
+			{
+				switch(resstav[i]) 
+				{
+					case "res1": 	tooltip=res1;break;
+					case "res2": 	tooltip=res2;break;
+					case "res3": 	tooltip=res3;break;
+					default: 	tooltip=resfull;
+				}
+				return [true, resstav[i], tooltip];    // !disabled, class, tooltip text
+			}
+		}
+		return [true, '', ''];
+	   }        
+      });    
+    $('#ui-datepicker-div').hide();     
+    
+    $('#rezform').submit(function (e) {
+      if($("#rezprijezd").val()=="" || $("#rezodjezd").val()=="" || $("#rezdospelych").val()=="" 
+        || $("#rezjmeno").val()=="" || $("#rezprijmeni").val()=="" || $("#reztelefon").val()=="" || $("#rezmail").val()=="" || $("#rezulice").val()=="" || $("#rezmesto").val()=="" || $("#rezpsc").val()=="" || $("#rezzeme").val()=="" )
+        //|| $("#rezsouhlas").prop('checked')==false) 
+      {
+        alert("Vyplňte prosím pole označená hvězičkou.");
+        return false;
+      }
+    
+    });      
+    
+    $('#rezsubmit').click( function (e) {
+      e.preventDefault(); 
+      $('#rezform').submit();  
+    });   
+        
+     
+    $(window).trigger('resize');     
+     
+   
+  });
+
+
+
+
+/*$(window).scroll(function(){
+  
+    if($(document).scrollTop() > $('#blocktop').offset().top+500 )
+    {
+        if($('header').attr('class') != 'small') $('header').addClass('small');
+    }
+    else
+    {
+        if($('header').attr('class') == 'small') $('header').removeClass('small');
+    }
+});*/
+ 
+ 
+ 
+   
+
+function scroller(hash) {
+    var target = $(hash);
+    //target = target.length ? target : $('[name=' + hash.slice(1) +']');
+    if (target.length) {
+     
+      var topoffset=parseInt(target.offset().top)-60;
+      $('html,body').animate({
+        scrollTop: topoffset
+      }, 1000);
+
+      return false;
+    }
+} 
+
+
+$(window).resize(function() {
+	
+  $('.foto img').one("load", function() {
+    fginit($(this).parents('.foto'));
+  }).each(function() {
+    if(this.complete) $(this).load();
+  });    
+  
+});
+
+   
+function fginit(img) {
+  width = $(img).width();
+  height = $(img).height();
+  imgwidth = $(img).find('img').width();
+  imgheight = $(img).find('img').height();
+  
+  //if(imgwidth>imgheight) // pro ctverec
+  if( (width/height) < (imgwidth/imgheight) )
+  {
+    ratio=height/imgheight;
+    margin = Math.floor((imgwidth*ratio-width)/2);
+    $(img).find('img').css({ "width": "auto", "height": height+"px", "margin-left": "-"+margin+"px", "margin-top":"0px" });
+      
+  } 
+  else
+  {
+    ratio=width/imgwidth;
+    margin = Math.floor((imgheight*ratio-height)/2); 
+    $(img).find('img').css({ "height": "auto", "width": width+"px", "margin-top": "-"+margin+"px", "margin-left":"0px" });        
+  }
+  
+       
+}
+
+
+
+function cycleImages(){
+      var $active = $('#cycler .active');
+      var $next = ($active.next().length > 0) ? $active.next() : $('#cycler img:first');
+      $next.css('z-index',2);//move the next image up the pile
+      $active.fadeOut(1500,function(){//fade out the top image
+	  $active.css('z-index',1).show().removeClass('active');//reset the z-index and unhide the image
+          $next.css('z-index',3).addClass('active');//make the next image the top one
+      });
+    }        
